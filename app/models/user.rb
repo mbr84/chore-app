@@ -1,6 +1,5 @@
 class User < ActiveRecord::Base
   attr_reader :password
-  attr_writer :password_digest, :family_id, 
   validates :username, :session_token, presence: true, uniqueness: true
 
   validates :password_digest, presence: { message: "Password can't be blank" }
