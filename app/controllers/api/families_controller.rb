@@ -15,7 +15,11 @@ class Api::FamiliesController < ApplicationController
   end
 
   def update
+    @family = Family.find(params[:id])
 
+    if @family.update(family_params)
+      render :show
+    end
   end
 
   protected
