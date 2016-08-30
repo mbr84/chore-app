@@ -9,6 +9,8 @@ class Api::FamiliesController < ApplicationController
 
     if family.save
       render :show
+    else
+      render json: @family.errors, status: 422
     end
   end
 
