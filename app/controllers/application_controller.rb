@@ -1,30 +1,40 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
+  # protect_from_forgery with: :exception
   helper_method :current_user, :login_user!, :logout, :user_params, :logged_in?
 
-  def current_user
-    @current_user ||= User.find_by(session_token: session[:session_token])
-  end
-
-  def login_user!(user)
-    session[:session_token] = user.reset_session_token!
-  end
-
-  def logout
-    current_user.reset_session_token!
-    session[:session_token] = nil
-  end
-
-  def logged_in?
-    !!current_user
-  end
+  attr_reader :current_user
 
   protected
 
+  def authenticate_request!
+    unless user_id_in_token?
+      render json: { errors: ['Not Authenticated'] }, status: :unauthorized
+      return
+    end
+    @current_user = User.find(auth_token[:user_id])
+  rescue JWT::VerificationError, JWT::DecodeError
+    render json: { errors: ['Not Authenticated'] }, status: :unauthorized
+  end
+
   def user_params
     params.require(:user).permit(:username, :password, :points, :family_id)
+  end
+
+  private
+  def http_token
+      @http_token ||= if request.headers['Authorization'].present?
+        request.headers['Authorization'].split(' ').last
+      end
+  end
+
+  def auth_token
+    @auth_token ||= JsonWebToken.decode(http_token)
+  end
+
+  def user_id_in_token?
+    http_token && auth_token && auth_token[:user_id].to_i
   end
 
 end
