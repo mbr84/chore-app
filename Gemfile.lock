@@ -69,6 +69,7 @@ GEM
     execjs (2.7.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
+    graphql (0.18.15)
     i18n (0.7.0)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -103,6 +104,7 @@ GEM
     pry-rails (0.3.4)
       pry (>= 0.9.10)
     rack (1.6.4)
+    rack-cors (0.4.0)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.6)
@@ -179,11 +181,13 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
   devise
+  graphql
   jbuilder (~> 2.0)
   jquery-rails
   jwt
   pg
   pry-rails
+  rack-cors
   rails (= 4.2.6)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
