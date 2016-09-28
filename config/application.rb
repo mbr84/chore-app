@@ -37,5 +37,7 @@ module ChoreApp
       resource '*', :headers => :any, :methods => [:get, :post, :options]
     end
     config.active_record.raise_in_transactional_callbacks = true
+
+    config.autoload_paths << Rails.root.join('app', 'graph', 'types')  
   end
 end
